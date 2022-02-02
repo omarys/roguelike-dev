@@ -17,7 +17,7 @@ class Action:
         
         This method must be overridden by Action subclasses.
         """
-        raise NonImplementedError()
+        raise NotImplementedError()
 
 
 class EscapeAction(Action):
