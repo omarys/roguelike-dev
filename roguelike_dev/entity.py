@@ -20,11 +20,11 @@ class Entity:
     gamemap: GameMap
 
     def __init__(
-        self, 
+        self,
         gamemap: Optional[GameMap] = None,
-        x: int = 0, 
-        y: int = 0, 
-        char: str = "?", 
+        x: int = 0,
+        y: int = 0,
+        char: str = "?",
         color: Tuple[int, int, int] = (255, 255, 255),
         name: str = "<Unnamed>",
         blocks_movement: bool = False,
@@ -53,11 +53,12 @@ class Entity:
         """Place this entity at a new location.  Handles moving across GameMaps."""
         self.x += x
         self.y += y
-        if gamemap: 
-            if hasattr(self, "gamemap"): # Possibly uninitialized
+        if gamemap:
+            if hasattr(self, "gamemap"):  # Possibly uninitialized
                 self.gamemap.entities.remove(self)
             self.gamemap = gamemap
             gamemap.entities.add(self)
+
 
 class Actor(Entity):
     def __init__(
@@ -69,7 +70,7 @@ class Actor(Entity):
         color: Tuple[int, int, int] = (255, 255, 255),
         name: str = "<Unnamed>",
         ai_cls: Type[BaseAI],
-        fighter: fighter
+        fighter: fighter,
     ):
         super().__init__(
             x=x,

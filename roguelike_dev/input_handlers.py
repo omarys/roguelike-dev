@@ -23,14 +23,14 @@ class EventHandler(tcod.event.EventDispatch[Action]):
             action.perform()
 
             self.engine.handle_enemy_turns()
-            self.engine.update_fov() # Update the FOV before the player's next action
+            self.engine.update_fov()  # Update the FOV before the player's next action
 
     def ev_quit(self, event: tcod.event.Quit) -> Optional[Action]:
         raise SystemExit()
 
     def ev_keydown(self, event: tcod.event.KeyDown) -> Optional[Action]:
         action: Optional[Action] = None
-        
+
         key = event.sym
 
         player = self.engine.player
