@@ -78,7 +78,7 @@ class MainGameEventHandler(EventHandler):
         player = self.engine.player
 
         if key in MOVE_KEYS:
-            dx, dy = MOVE_KEYS[keys]
+            dx, dy = MOVE_KEYS[key]
             action = BumpAction(player, dx, dy)
         elif key in WAIT_KEYS:
             action = WaitAction(player)
