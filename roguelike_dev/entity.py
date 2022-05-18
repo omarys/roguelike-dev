@@ -5,7 +5,6 @@ from typing import Optional, Tuple, Type, TypeVar, TYPE_CHECKING
 
 from render_order import RenderOrder
 
-
 if TYPE_CHECKING:
     from components.ai import BaseAI
     from components.fighter import Fighter
@@ -55,13 +54,18 @@ class Entity:
 
     def place(self, x: int, y: int, gamemap: Optional[GameMap] = None) -> None:
         """Place this entity at a new location.  Handles moving across GameMaps."""
-        self.x += x
-        self.y += y
+        self.x = x
+        self.y = y
         if gamemap:
             if hasattr(self, "gamemap"):  # Possibly uninitialized
                 self.gamemap.entities.remove(self)
             self.gamemap = gamemap
             gamemap.entities.add(self)
+
+    def move(self, dx: int, dy: int) -> None:
+        # Move the entity by a given amount
+        self.x += dx
+        self.y += dy
 
 
 class Actor(Entity):
@@ -74,7 +78,7 @@ class Actor(Entity):
         color: Tuple[int, int, int] = (255, 255, 255),
         name: str = "<Unnamed>",
         ai_cls: Type[BaseAI],
-        fighter: fighter,
+        fighter: Fighter,
     ):
         super().__init__(
             x=x,

@@ -18,7 +18,7 @@ class Engine:
     game_map: GameMap
 
     def __init__(self, player: Actor):
-        self.event_handler: EventHanlder = MainGameEventHandler(self)
+        self.event_handler: EventHandler = MainGameEventHandler(self)
         self.player = player
 
     def handle_enemy_turns(self) -> None:
