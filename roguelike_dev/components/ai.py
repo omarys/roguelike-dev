@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List, Tuple, TYPE_CHECKING
 
-import numpy as numpy
+import numpy as np
 import tcod
 
 from actions import Action, MeleeAction, MovementAction, WaitAction
@@ -21,8 +21,8 @@ class BaseAI(Action, BaseComponent):
     def get_path_to(self, dest_x: int, dest_y: int) -> List[Tuple[int, int]]:
         """Compute and return a path to the target position.
 
-        If there is no vlaid path then returns an empty list."""
-
+        If there is no valid path then returns an empty list.
+        """
         # Copy the walkable array
         cost = np.array(self.entity.gamemap.tiles["walkable"], dtype=np.int8)
 
@@ -57,7 +57,7 @@ class HostileEnemy(BaseAI):
         target = self.engine.player
         dx = target.x - self.entity.x
         dy = target.y - self.entity.y
-        distance = max(abs(dx))  # Chebyshev distanceself.
+        distance = max(abs(dx), abs(dy))  # Chebyshev distance.
 
         if self.engine.game_map.visible[self.entity.x, self.entity.y]:
             if distance <= 1:
