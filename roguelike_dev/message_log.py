@@ -59,7 +59,9 @@ class MessageLog:
         """Return a wrapped text message."""
         for line in string.splitlines():  # Handle newlines in messages.
             yield from textwrap.wrap(
-                line, width, expand_tabs=True,
+                line,
+                width,
+                expand_tabs=True,
             )
 
     @classmethod
