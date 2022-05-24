@@ -42,7 +42,6 @@ def main() -> None:
         max_items_per_room=max_items_per_room,
         engine=engine,
     )
-
     engine.update_fov()
 
     engine.message_log.add_message(

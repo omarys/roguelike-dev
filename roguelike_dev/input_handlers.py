@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-from typing import Optional, TYPE_CHECKING
+from typing import Callable, Optional, Tuple, TYPE_CHECKING
 
 import tcod
 
 import actions
 from actions import (
-    Action, 
-    BumpAction, 
+    Action,
+    BumpAction,
     PickupAction,
     WaitAction,
 )
@@ -143,7 +143,7 @@ class InventoryEventHandler(AskUserEventHandler):
     TITLE = "<missing title>"
 
     def on_render(self, console: tcod.Console) -> None:
-        """Render and inventory menu, which displays the hitems in the inventory, and the letter to select them.
+        """Render an inventory menu, which displays the items in the inventory, and the letter to select them.
         Will move to a different position based on where the player is located, so the player can always see where
         they are.
         """
@@ -204,7 +204,7 @@ class InventoryEventHandler(AskUserEventHandler):
 class InventoryActivateHandler(InventoryEventHandler):
     """Handle using an inventory item."""
 
-    TITLE = "Select an item to use."
+    TITLE = "Select an item to use"
 
     def on_item_selected(self, item: Item) -> Optional[Action]:
         """Return the action for the selected item."""
@@ -282,6 +282,57 @@ class LookHandler(SelectIndexHandler):
         self.engine.event_handler = MainGameEventHandler(self.engine)
 
 
+class SingleRangedAttackHandler(SelectIndexHandler):
+    """Handles targeting a single enemy.  Only the enemy selected will be affected."""
+
+    def __init__(
+            self, engine: Engine, callback: Callable[[Tuple[int, int]], Optional[Action]]
+        ):
+            super().__init__(engine)
+
+            self.callback = callback
+
+    def on_index_selected(self, x: int, y: int) -> Optional[Action]:
+        return self.callback((x, y))
+
+
+class AreaRangedAttackHandler(SelectIndexHandler):
+    """
+    Handles targetintg an area within a given radius.
+    Any entity within the area will be affected.
+    """
+
+    def __init__(
+        self,
+        engine: Engine,
+        radius: int,
+        callback: Callable[[Tuple[int, int]], Optional[Action]],
+    ):
+        super().__init__(engine)
+
+        self.radius = radius
+        self.callback = callback
+
+    def on_render(self, console: tcod.Console) -> None:
+        """Highlight the tile under the cursor."""
+        super().on_render(console)
+
+        x, y = self.engine.mouse_location
+
+        # Draw a rectangle around the targeted area, so the player can see the affected tiles.
+        console.draw_frame(
+            x=x - self.radius - 1,
+            y=y - self.radius - 1,
+            width=self.radius ** 2,
+            height=self.radius ** 2,
+            fg=color.red,
+            clear=False,
+        )
+
+    def on_index_selected(self, x: int, y: int) -> Optional[Action]:
+        return self.callback((x, y))
+
+
 class MainGameEventHandler(EventHandler):
     def ev_keydown(self, event: tcod.event.KeyDown) -> Optional[Action]:
         action: Optional[Action] = None
@@ -305,7 +356,7 @@ class MainGameEventHandler(EventHandler):
             action = PickupAction(player)
 
         elif key == tcod.event.K_i:
-            self.engine.event_handler = InventoryEventHandler(self.engine)
+            self.engine.event_handler = InventoryActivateHandler(self.engine)
         elif key == tcod.event.K_d:
             self.engine.event_handler = InventoryDropHandler(self.engine)
         elif key == tcod.event.K_SLASH:
@@ -375,6 +426,6 @@ class HistoryViewer(EventHandler):
         elif event.sym == tcod.event.K_HOME:
             self.cursor = 0  # Move directly to the top message.
         elif event.sym == tcod.event.K_END:
-            self.cursor = self.log_length - 1  # Move directly to last message.
+            self.cursor = self.log_length - 1  # Move directly to the last message.
         else:  # Any other key moves back to the main game state.
             self.engine.event_handler = MainGameEventHandler(self.engine)

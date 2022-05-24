@@ -33,9 +33,9 @@ class Action:
 
 
 class PickupAction(Action):
-    """Pickup and item and add it to the inventory, if there is room for it."""
+    """Pickup an item and add it to the inventory, if there is room for it."""
 
-    def __init_(self, entity: Actor):
+    def __init__(self, entity: Actor):
         super().__init__(entity)
 
     def perform(self) -> None:
@@ -59,7 +59,7 @@ class PickupAction(Action):
 
 
 class ItemAction(Action):
-    def __init_(
+    def __init__(
         self, entity: Actor, item: Item, target_xy: Optional[Tuple[int, int]] = None
     ):
         super().__init__(entity)
@@ -160,5 +160,6 @@ class BumpAction(ActionWithDirection):
     def perform(self) -> None:
         if self.target_actor:
             return MeleeAction(self.entity, self.dx, self.dy).perform()
+
         else:
             return MovementAction(self.entity, self.dx, self.dy).perform()
