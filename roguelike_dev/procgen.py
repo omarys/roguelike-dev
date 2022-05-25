@@ -78,6 +78,7 @@ def place_entities(
             else:
                 entity_factories.lightning_scroll.spawn(dungeon, x, y)
 
+
 def tunnel_between(
     start: Tuple[int, int], end: Tuple[int, int]
 ) -> Iterator[Tuple[int, int]]:

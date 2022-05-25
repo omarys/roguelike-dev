@@ -112,7 +112,7 @@ class GameWorld:
         room_max_size: int,
         max_monsters_per_room: int,
         max_items_per_room: int,
-        current_floor: int = 0
+        current_floor: int = 0,
     ):
         self.engine = engine
 

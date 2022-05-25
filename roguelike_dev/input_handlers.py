@@ -97,8 +97,8 @@ class PopupMessage(BaseEventHandler):
     def on_render(self, console: tcod.Console) -> None:
         """Render the parent and dim the result, then print the message on top."""
         self.parent.on_render(console)
-        console.tiles_rgb["fg"] //=8
-        console.tiles_rgb["bg"] //=8
+        console.tiles_rgb["fg"] //= 8
+        console.tiles_rgb["bg"] //= 8
 
         console.print(
             console.width // 2,
@@ -198,7 +198,7 @@ class CharacterScreenEventHandler(AskUserEventHandler):
 
         if self.engine.player.x <= 30:
             x = 40
-        else: 
+        else:
             x = 0
 
         y = 0
@@ -223,9 +223,9 @@ class CharacterScreenEventHandler(AskUserEventHandler):
             x=x + 1, y=y + 2, string=f"XP: {self.engine.player.level.current_xp}"
         )
         console.print(
-            x=x + 1, 
+            x=x + 1,
             y=y + 3,
-            string=f"XP for next Level: {self.engine.player.level.experience_to_next_level}"
+            string=f"XP for next Level: {self.engine.player.level.experience_to_next_level}",
         )
 
         console.print(
@@ -496,8 +496,8 @@ class AreaRangedAttackHandler(SelectIndexHandler):
         console.draw_frame(
             x=x - self.radius - 1,
             y=y - self.radius - 1,
-            width=self.radius ** 2,
-            height=self.radius ** 2,
+            width=self.radius**2,
+            height=self.radius**2,
             fg=color.red,
             clear=False,
         )
@@ -516,7 +516,7 @@ class MainGameEventHandler(EventHandler):
         player = self.engine.player
 
         if key == tcod.event.K_PERIOD and modifier & (
-                tcod.event.KMOD_LSHIFT | tcod.event.KMOD_RSHIFT
+            tcod.event.KMOD_LSHIFT | tcod.event.KMOD_RSHIFT
         ):
             return actions.TakeStairsAction(player)
 
@@ -556,7 +556,7 @@ class GameOverEventHandler(EventHandler):
 
     def ev_quit(self, event: tcod.event.Quit) -> None:
         self.on_quit()
-                
+
     def handle_events(self, event: tcod.event.KeyDown) -> None:
         if event.sym == tcod.event.K_ESCAPE:
             self.on_quit()

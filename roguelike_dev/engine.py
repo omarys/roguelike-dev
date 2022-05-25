@@ -62,10 +62,7 @@ class Engine:
         )
 
         render_functions.render_names_mouse_location(
-            console=console, 
-            x=21, 
-            y=44, 
-            engine=self
+            console=console, x=21, y=44, engine=self
         )
 
     def save_as(self, filename: str) -> None:
