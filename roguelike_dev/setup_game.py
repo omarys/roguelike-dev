@@ -68,6 +68,7 @@ class MainMenu(input_handlers.BaseEventHandler):
     """Handle the main menu rendering and input."""
 
     def on_render(self, console: tcod.Console) -> None:
+        """Render the main menu on a background image."""
         console.draw_semigraphics(background_image, 0, 0)
 
         console.print(
@@ -115,4 +116,4 @@ class MainMenu(input_handlers.BaseEventHandler):
         elif event.sym == tcod.event.K_n:
             return input_handlers.MainGameEventHandler(new_game())
 
-            return None
+        return None
