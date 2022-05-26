@@ -130,7 +130,7 @@ def place_entities(
         item_chances, number_of_items, floor_number
     )
 
-    for entity in monsters + items
+    for entity in monsters + items:
         x = random.randint(room.x1 + 1, room.x2 - 1)
         y = random.randint(room.y1 + 1, room.y2 - 1)
 
